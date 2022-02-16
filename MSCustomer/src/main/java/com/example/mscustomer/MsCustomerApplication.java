@@ -1,4 +1,4 @@
-package br.com.mscustomer;
+package com.example.mscustomer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

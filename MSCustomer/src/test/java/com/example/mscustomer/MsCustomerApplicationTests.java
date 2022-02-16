@@ -1,4 +1,4 @@
-package br.com.mscustomer;
+package com.example.mscustomer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
