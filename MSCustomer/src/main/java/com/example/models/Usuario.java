@@ -1,9 +1,10 @@
-package com.example.mscustomer.models;
+package com.example.models;
 
-import com.example.mscustomer.enums.Genero;
+import com.example.enums.Sex;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 @Table(name = "TB_Usuario")
@@ -13,10 +14,11 @@ public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id;
     private String firstName;
     private String lastName;
-    private Genero genero;
+    @Enumerated(value = EnumType.STRING)
+    private Sex sex;
     private String cpf;
     private String birthdate;
     private String email;
@@ -27,10 +29,15 @@ public class Usuario implements Serializable {
 
     }
 
-    public Usuario(String firstName, String lastName, Genero genero, String cpf, String birthdate, String email, String password, Boolean active) {
+    public Usuario(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public Usuario(String firstName, String lastName, Sex sex, String cpf, String birthdate, String email, String password, Boolean active) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.genero = genero;
+        this.sex = sex;
         this.cpf = cpf;
         this.birthdate = birthdate;
         this.email = email;
@@ -38,11 +45,11 @@ public class Usuario implements Serializable {
         this.active = active;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -62,12 +69,12 @@ public class Usuario implements Serializable {
         this.lastName = lastName;
     }
 
-    public Genero getSex() {
-        return genero;
+    public Sex getSex() {
+        return sex;
     }
 
-    public void setSex(Genero sex) {
-        this.genero = sex;
+    public void setSex(Sex sex) {
+        this.sex = sex;
     }
 
     public String getCpf() {
