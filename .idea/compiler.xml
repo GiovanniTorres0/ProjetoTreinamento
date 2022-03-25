@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="history" />
+        <module name="bffshop" />
+        <module name="checkout" />
+        <module name="catalog" />
+        <module name="customer" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="bffshop" target="17" />
+      <module name="catalog" target="17" />
+      <module name="checkout" target="17" />
+      <module name="customer" target="17" />
+      <module name="history" target="17" />
+      <module name="microservices" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="bffshop" options="" />
+      <module name="catalog" options="" />
+      <module name="checkout" options="" />
+      <module name="customer" options="" />
+      <module name="history" options="" />
+    </option>
+  </component>
+</project>

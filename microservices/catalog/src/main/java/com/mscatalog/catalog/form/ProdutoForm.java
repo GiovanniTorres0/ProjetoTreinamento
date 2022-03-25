@@ -1,0 +1,46 @@
+package com.mscatalog.catalog.form;
+
+import com.mscatalog.catalog.entity.Categoria;
+import com.mscatalog.catalog.entity.Produto;
+import com.mscatalog.catalog.repository.CategoriaRepository;
+import lombok.*;
+
+import javax.persistence.EntityNotFoundException;
+import javax.validation.constraints.NotBlank;
+import java.util.Optional;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProdutoForm {
+
+
+    private Integer id;
+    @NotBlank
+    private String name;
+    @NotBlank
+    private String description;
+    private Boolean active;
+    private Integer category_id;
+
+    public Produto converter(ProdutoForm produtoForm, CategoriaRepository categoriaRepository) {
+        Produto produto = new Produto();
+        produto.setName(produtoForm.getName());
+        produto.setDescription(produtoForm.getDescription());
+        produto.setActive(produtoForm.getActive());
+        Categoria categoria = inicia(produtoForm, categoriaRepository);
+        produto.setCategoria(categoria);
+        return produto;
+    }
+
+    public Categoria inicia(ProdutoForm produtoForm, CategoriaRepository categoriaRepository) {
+        Optional<Categoria> optional = categoriaRepository.findById(produtoForm.getCategory_id());
+        if (optional.isPresent()) {
+            return optional.get();
+        }
+        throw new EntityNotFoundException();
+    }
+
+
+}
+

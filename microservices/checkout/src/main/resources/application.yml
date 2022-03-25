@@ -1,0 +1,27 @@
+server:
+  port: 8083
+app:
+  message: Message has been sent Successfully..
+spring:
+  rabbitmq:
+    port: 5672
+    host: localhost
+    username: guest
+    password: guest
+    exchange: purchase.exchange
+    queue: purchase.queue
+    routingkey: purchase.routingkey
+  application:
+    name: checkout
+  datasource:
+    password: password
+    url: jdbc:postgresql://localhost:5432/checkout
+    username: msstore
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
