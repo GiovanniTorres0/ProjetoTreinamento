@@ -4,6 +4,6 @@ import com.mscheckout.checkout.form.PurchaseForm;
 
 public interface RabbitmqService {
 
-    void send(PurchaseForm purchaseForm) throws Exception;
+    String send(PurchaseForm purchaseForm) throws Exception;
 
 }

@@ -30,20 +30,17 @@ public class PaymentServiceImp implements PaymentService {
     public ResponseEntity<PaymentDto> salvarPagamento(@RequestBody @Valid @RequestParam PaymentForm paymentForm) {
         Payment payment = paymentForm.converter(paymentForm);
         if (payment.getStatus()) {
-            if (payment != null) {
-                return new ResponseEntity<PaymentDto>(new PaymentDto(paymentRepository.save(payment)), HttpStatus.CREATED);
-            }
+            paymentRepository.save(payment);
+            return new ResponseEntity<>(new PaymentDto(payment), HttpStatus.CREATED);
         }
-        return new ResponseEntity<PaymentDto>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Override
     public List<PaymentDto> findAll() {
         try {
             List<Payment> payments = paymentRepository.findAll();
-            if (payments != null) {
-                return PaymentDto.converter(payments);
-            }
+            return PaymentDto.converter(payments);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,7 +54,7 @@ public class PaymentServiceImp implements PaymentService {
         if (optional.isPresent()) {
             Payment payment = paymentForm.converter(paymentForm);
             payment.setId(id);
-            return new ResponseEntity<PaymentDto>(new PaymentDto(paymentRepository.save(payment)), HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(new PaymentDto(paymentRepository.save(payment)), HttpStatus.ACCEPTED);
         }
         return ResponseEntity.notFound().build();
     }
@@ -66,10 +63,7 @@ public class PaymentServiceImp implements PaymentService {
     @Override
     public ResponseEntity<PaymentDto> findById(@PathVariable Integer id) {
         Optional<Payment> optional = paymentRepository.findById(id);
-        if (optional.isPresent()) {
-            return ResponseEntity.ok(new PaymentDto(optional.get()));
-        }
-        return ResponseEntity.notFound().build();
+        return optional.map(payment -> ResponseEntity.ok(new PaymentDto(payment))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 

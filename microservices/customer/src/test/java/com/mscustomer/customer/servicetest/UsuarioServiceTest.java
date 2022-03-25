@@ -54,6 +54,7 @@ public class UsuarioServiceTest {
     @Test
     public void Save() throws Exception {
         usuarioServiceImp.save(usuarioForm());
+        System.out.println("Objeto foi salvo");
     }
 
     @Test
@@ -62,8 +63,10 @@ public class UsuarioServiceTest {
         ResponseEntity<UsuarioDto> entity = usuarioServiceImp.findById(id);
         if(entity.getStatusCodeValue() == 404){
             Assert.assertEquals(entity.getStatusCodeValue(), 404);
+            System.out.println("Entidade não foi encontrada");
         } else {
             Assert.assertEquals("Pedro", Objects.requireNonNull(entity.getBody()).getFirstName());
+            System.out.println("Entidade foi encontrada");
         }
     }
 
@@ -73,8 +76,10 @@ public class UsuarioServiceTest {
         ResponseEntity<UsuarioDto> entity = usuarioServiceImp.update(atualizarUsuarioForm(),id);
         if(entity.getStatusCodeValue() == 404) {
             Assert.assertEquals(entity.getStatusCodeValue(), 404);
+            System.out.println("Entidade não foi encontrada para atualizar");
         } else {
             Assert.assertEquals("Carloz", Objects.requireNonNull(entity.getBody()).getFirstName());
+            System.out.println("Entidade foi encontrada para atualizar");
         }
     }
 

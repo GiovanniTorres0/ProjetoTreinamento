@@ -31,14 +31,16 @@ public class RabbitmqServiceImp implements RabbitmqService {
 
 
     @Override
-    public void send(@RequestBody @Valid PurchaseForm purchaseForm) throws Exception {
+    public String send(@RequestBody @Valid PurchaseForm purchaseForm) {
         Integer idP = Integer.valueOf(purchaseForm.getPayment_id());
+        String worth;
         Optional<Payment> optionalPayment = paymentRepository.findById(idP);
         if (optionalPayment.isPresent()) {
             rabbitTemplate.convertAndSend(exchange, routingkey, purchaseForm);
             rabbitTemplate.convertAndSend("history.exchange", "history.routingkey", purchaseForm);
+            return "FUNCIONA";
         } else {
-            throw new Exception("Provavelmente não tem payment cadastrado no banco");
+            return "NÃO ENCONTRADO";
         }
 
     }
