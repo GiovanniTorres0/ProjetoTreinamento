@@ -38,9 +38,9 @@ public class RabbitmqServiceImp implements RabbitmqService {
         if (optionalPayment.isPresent()) {
             rabbitTemplate.convertAndSend(exchange, routingkey, purchaseForm);
             rabbitTemplate.convertAndSend("history.exchange", "history.routingkey", purchaseForm);
-            return "FUNCIONA";
+            return "MENSAGEM ENVIADA";
         } else {
-            return "NÃO ENCONTRADO";
+            return "MENSAGEM NÃO ENVIADA";
         }
 
     }

@@ -22,7 +22,7 @@ public class PaymentForm implements Serializable {
 
     public Payment converter(PaymentForm paymentForm){
         Payment payment = new Payment();
-        payment.setCard(paymentForm.getCard().toString());
+        payment.setCard(paymentForm.getCard());
         payment.setDiscount(paymentForm.getDiscount());
         payment.setStatus(paymentForm.getStatus());
         return payment;

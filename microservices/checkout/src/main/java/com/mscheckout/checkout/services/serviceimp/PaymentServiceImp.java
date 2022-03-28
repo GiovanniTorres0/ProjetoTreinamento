@@ -79,12 +79,13 @@ public class PaymentServiceImp implements PaymentService {
     }
 
     @Override
-    public PaymentDto retorna(Integer id){
+    public PaymentDto retorna(Integer id) {
         Optional<Payment> payment = paymentRepository.findById(id);
-        if(payment.isPresent()){
+        if (payment.isPresent()) {
             return new PaymentDto(payment.get());
+        } else {
+            throw new EntityNotFoundException();
         }
-        throw new EntityNotFoundException();
-    }
 
+    }
 }

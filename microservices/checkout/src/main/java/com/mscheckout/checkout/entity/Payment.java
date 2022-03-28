@@ -1,5 +1,6 @@
 package com.mscheckout.checkout.entity;
 
+import com.mscheckout.checkout.enums.Card;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ public class Payment {
             sequenceName = "payment_id_sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_id_sequence")
     private Integer id;
-    private String card;
+    private Card card;
     private int discount;
     private Boolean status;
 

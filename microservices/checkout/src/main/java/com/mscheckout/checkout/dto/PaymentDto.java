@@ -1,6 +1,7 @@
 package com.mscheckout.checkout.dto;
 
 import com.mscheckout.checkout.entity.Payment;
+import com.mscheckout.checkout.enums.Card;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 public class PaymentDto {
 
 
-    private String card;
+    private Card card;
     private int discount;
     private Boolean status;
 
