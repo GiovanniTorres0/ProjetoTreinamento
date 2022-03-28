@@ -28,7 +28,7 @@ import java.util.Objects;
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 @WebAppConfiguration
-public class CheckoutService {
+public class CheckoutServiceTest {
 
 
     @InjectMocks

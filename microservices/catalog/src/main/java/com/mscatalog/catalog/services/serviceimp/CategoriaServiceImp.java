@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static com.mscatalog.catalog.entity.Produto.SEQUENCE_NAME;
@@ -40,8 +39,8 @@ public class CategoriaServiceImp implements CategoriaService {
         Categoria categoria = categoriaForm.converter(categoriaForm);
         if (categoria != null) {
             categoria.setId(sequenceGeneratorService.getSequenceNumber(SEQUENCE_NAME));
-            categoria = categoriaRepository.save(categoria);
-            return new ResponseEntity<CategoriaDto>(new CategoriaDto(categoria), HttpStatus.CREATED);
+            categoriaRepository.save(categoria);
+            return new ResponseEntity<>(new CategoriaDto(categoria), HttpStatus.CREATED);
         }
         return ResponseEntity.badRequest().build();
     }
@@ -49,32 +48,28 @@ public class CategoriaServiceImp implements CategoriaService {
     @Override
     public List<CategoriaDto> mostraCategorias() {
         List<Categoria> categorias = categoriaRepository.findAll();
-        if (categorias != null) {
-            List<CategoriaDto> converter = CategoriaDto.converter(categorias);
-            return converter;
-        }
-        throw new NoSuchElementException();
+        return CategoriaDto.converter(categorias);
     }
 
     @Override
     public ResponseEntity<CategoriaDto> buscaCategoria(@PathVariable Integer id) {
         Optional<Categoria> optional = categoriaRepository.findById(id);
-        if (optional.isPresent()) {
-            return new ResponseEntity<CategoriaDto>(new CategoriaDto(optional.get()), HttpStatus.OK);
-        }
-        return ResponseEntity.notFound().build();
+        return optional.map(categoria -> new ResponseEntity<>(new CategoriaDto(categoria), HttpStatus.OK)).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Transactional
     @Override
     public ResponseEntity<CategoriaDto> atualizaCategoria(@RequestBody @Valid CategoriaForm categoriaForm, @PathVariable Integer id) {
+        ResponseEntity<CategoriaDto> result;
         Optional<Categoria> optional = categoriaRepository.findById(id);
         if (optional.isPresent()) {
             Categoria categoria = categoriaForm.converter(categoriaForm);
             categoria.setId(id);
-            return new ResponseEntity<CategoriaDto>(new CategoriaDto(categoriaRepository.save(categoria)), HttpStatus.ACCEPTED);
+            result = new ResponseEntity<>(new CategoriaDto(categoriaRepository.save(categoria)), HttpStatus.ACCEPTED);
+        } else {
+            result = ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+        return result;
     }
 
     @Override

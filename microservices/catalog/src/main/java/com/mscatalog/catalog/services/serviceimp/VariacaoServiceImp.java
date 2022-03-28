@@ -39,10 +39,10 @@ public class VariacaoServiceImp implements VariacaoService {
     public ResponseEntity<VariacaoDto> cadastraVariacao(@RequestBody @Valid List<VariacaoForm> listForm) throws Exception {
         VariacaoForm variacaoForm = new VariacaoForm();
 
-        for(int i =0; i< listForm.size(); i++){
-            Optional<Produto> optional = produtoRepository.findById(listForm.get(i).getProduct_id());
-           if(optional.isEmpty()){
-                throw new Exception("PRODUTO PARA VINCULAR INEXISTENTE");
+        for (VariacaoForm form : listForm) {
+            Optional<Produto> optional = produtoRepository.findById(form.getProduct_id());
+            if (optional.isEmpty()) {
+                ResponseEntity.notFound().build();
             }
         }
         List<Variacao> variacoes = variacaoForm.converter(listForm);
@@ -52,15 +52,13 @@ public class VariacaoServiceImp implements VariacaoService {
             }
         }
         Produto produto = variacaoForm.retorna(listForm, produtoRepository);
-        if (variacoes != null && produto != null) {
-            for (int i = 0; i < variacoes.size(); i++) {
+        if (produto != null) {
+            for (Variacao variacoe : variacoes) {
                 Variacao variacao = new Variacao();
                 variacao.setId(sequenceGeneratorService.getSequenceNumber(SEQUENCE_NAME));
-                variacoes.get(i).setId(variacao.getId());
+                variacoe.setId(variacao.getId());
             }
-            for (int i = 0; i < variacoes.size(); i++) {
-                variacaoRepository.save(variacoes.get(i));
-            }
+            variacaoRepository.saveAll(variacoes);
 
             produto.setVariacoes(variacoes);
             produtoRepository.save(produto);
@@ -80,14 +78,12 @@ public class VariacaoServiceImp implements VariacaoService {
             List<Variacao> variacoes = variacaoForm.converter(listForm);
             Produto produto = variacaoForm.retorna(listForm, produtoRepository);
             if (variacoes != null && produto != null) {
-                for (int i = 0; i < variacoes.size(); i++) {
+                for (Variacao variacoe : variacoes) {
                     Variacao variacao = new Variacao();
                     variacao.setId(sequenceGeneratorService.getSequenceNumber(SEQUENCE_NAME));
-                    variacoes.get(i).setId(optional.get().getId());
+                    variacoe.setId(optional.get().getId());
                 }
-                for (int i = 0; i < variacoes.size(); i++) {
-                    variacaoRepository.save(variacoes.get(i));
-                }
+                variacaoRepository.saveAll(variacoes);
                 produto.setVariacoes(variacoes);
                 produtoRepository.save(produto);
                 return ResponseEntity.ok().build();

@@ -31,7 +31,7 @@ public interface ProdutoService {
     ResponseEntity<ProdutoDto> deletarPorId(@PathVariable Integer id);
 
 
-    List<ProdutosVariadosDto> retorna();
+    List<ProdutosVariadosDto> retorna() throws Exception;
 
-    double valor();
+    double valor() throws Exception;
 }

@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.validation.Valid;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static com.mscatalog.catalog.entity.Produto.SEQUENCE_NAME;
@@ -41,36 +40,29 @@ public class ProdutoServiceImp implements ProdutoService {
 
     @Transactional
     @Override
-    public ResponseEntity<ProdutoDto> registraProduto(@RequestBody @Valid ProdutoForm produtoForm) throws Exception {
+    public ResponseEntity<ProdutoDto> registraProduto(@RequestBody @Valid ProdutoForm produtoForm) {
         Produto produto = produtoForm.converter(produtoForm, categoriaRepository);
-        if (produto != null) {
-            if (produto.getCategoria().getActive()) {
-                produto.setId(sequenceGeneratorService.getSequenceNumber(SEQUENCE_NAME));
-                return new ResponseEntity<ProdutoDto>(new ProdutoDto(produtoRepository.save(produto)), HttpStatus.CREATED);
-            }
-        }
-        throw new Exception("---É preciso que a categoria seja cadastrada antes---");
-    }
-
-    @Override
-    public List<ProdutosVariadosDto> buscaTodosProdutos() {
-        List<Produto> produtos = produtoRepository.findAll();
-        if (produtos != null) {
-            List<ProdutosVariadosDto> converter = ProdutosVariadosDto.converterProdutos(produtos);
-            return converter;
+        if (produto != null && produto.getCategoria().getActive()) {
+            produto.setId(sequenceGeneratorService.getSequenceNumber(SEQUENCE_NAME));
+            produtoRepository.save(produto);
+            return new ResponseEntity<>(new ProdutoDto(produto), HttpStatus.CREATED);
         } else {
-            throw new NoSuchElementException();
+            System.out.println(" -- TALVEZ A CATEGORIA PRECISE SER CADASTRADA ANTES -- ");
+            return ResponseEntity.notFound().build();
         }
     }
 
-    @Override
-    public ResponseEntity<ProdutoDto> buscaPorId(@PathVariable Integer id) {
-        Optional<Produto> optional = produtoRepository.findById(id);
-        if (optional.isPresent()) {
-            return new ResponseEntity<ProdutoDto>(new ProdutoDto(optional.get()), HttpStatus.OK);
+        @Override
+        public List<ProdutosVariadosDto> buscaTodosProdutos () {
+            List<Produto> produtos = produtoRepository.findAll();
+            return ProdutosVariadosDto.converterProdutos(produtos);
         }
-        return ResponseEntity.notFound().build();
-    }
+
+        @Override
+        public ResponseEntity<ProdutoDto> buscaPorId (@PathVariable Integer id){
+            Optional<Produto> optional = produtoRepository.findById(id);
+            return optional.map(produto -> new ResponseEntity<>(new ProdutoDto(produto), HttpStatus.OK)).orElseGet(() -> ResponseEntity.notFound().build());
+        }
 
     @Transactional
     @Override
@@ -79,7 +71,7 @@ public class ProdutoServiceImp implements ProdutoService {
         if (optional.isPresent()) {
             Produto produto = produtoForm.converter(produtoForm, categoriaRepository);
             produto.setId(id);
-            return new ResponseEntity<ProdutoDto>(new ProdutoDto(produtoRepository.save(produto)), HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(new ProdutoDto(produtoRepository.save(produto)), HttpStatus.ACCEPTED);
         }
         return ResponseEntity.notFound().build();
     }
@@ -95,24 +87,26 @@ public class ProdutoServiceImp implements ProdutoService {
         return ResponseEntity.notFound().build();
     }
 
-    @Override
-    public List<ProdutosVariadosDto> retorna() {
-        List<Produto> produtos = produtoRepository.findProdutoByActiveIsTrue();
-        List<ProdutosVariadosDto> lista = new LinkedList<>();
-        return lista = ProdutosVariadosDto.converterProdutos(produtos);
-
-    }
-
-
-
-    @Override
-    public double valor() {
-    double valor = 0;
-    for (int i = 0; i < retorna().size(); i++) {
-            valor += retorna().get(i).getVariacoes().get(i).getPrice();
+        @Override
+        public List<ProdutosVariadosDto> retorna () throws Exception {
+           try {
+               List<Produto> produtos = produtoRepository.findProdutoByActiveIsTrue();
+               List<ProdutosVariadosDto> lista = new LinkedList<>();
+               return ProdutosVariadosDto.converterProdutos(produtos);
+           } catch(Exception e) {
+               throw new Exception("NÃO LOCALIZOU PRODUTOS ATIVOS");
+           }
         }
-    return valor;
+
+
+        @Override
+        public double valor () throws Exception {
+            double valor = 0;
+            for (int i = 0; i < retorna().size(); i++) {
+                valor += retorna().get(i).getVariacoes().get(i).getPrice();
+            }
+            return valor;
+        }
+
+
     }
-
-
-}

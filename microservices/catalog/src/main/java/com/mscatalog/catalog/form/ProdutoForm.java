@@ -3,9 +3,10 @@ package com.mscatalog.catalog.form;
 import com.mscatalog.catalog.entity.Categoria;
 import com.mscatalog.catalog.entity.Produto;
 import com.mscatalog.catalog.repository.CategoriaRepository;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotBlank;
 import java.util.Optional;
 
@@ -35,10 +36,8 @@ public class ProdutoForm {
 
     public Categoria inicia(ProdutoForm produtoForm, CategoriaRepository categoriaRepository) {
         Optional<Categoria> optional = categoriaRepository.findById(produtoForm.getCategory_id());
-        if (optional.isPresent()) {
-            return optional.get();
-        }
-        throw new EntityNotFoundException();
+        return optional.orElseGet(() -> new Categoria(1, "PRODUTO INVÁLIDO PARA TESTE", true));
+
     }
 
 
