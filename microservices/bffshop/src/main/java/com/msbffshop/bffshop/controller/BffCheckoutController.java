@@ -1,7 +1,6 @@
 package com.msbffshop.bffshop.controller;
 
 import com.msbffshop.bffshop.services.endpointservice.CheckoutMicroService;
-import com.mscheckout.checkout.controller.PaymentController;
 import com.mscheckout.checkout.dto.PaymentDto;
 import com.mscheckout.checkout.form.PurchaseForm;
 import io.swagger.annotations.ApiOperation;
@@ -20,7 +19,7 @@ public class BffCheckoutController {
     @Autowired
     CheckoutMicroService checkoutMicroService;
 
-    @ApiOperation(value = "Busca todos os pagamentos", notes = "Busca todos os dados de pagamentos", response = PaymentController.class)
+    @ApiOperation(value = "Busca todos os pagamentos", notes = "Busca todos os dados de pagamentos", response = BffCheckoutController.class)
     @ApiResponses({@ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 404, message = "Not Found")})
     @GetMapping("/payments")
     public List<PaymentDto> buscaTodosOsPagamentos() {
