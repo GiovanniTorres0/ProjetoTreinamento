@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,63 +37,57 @@ public class VariacaoServiceImp implements VariacaoService {
 
     @Transactional
     @Override
-    public ResponseEntity<VariacaoDto> cadastraVariacao(@RequestBody @Valid List<VariacaoForm> listForm) throws Exception {
+    public ResponseEntity<VariacaoDto> cadastraVariacao(@RequestBody @Valid List<VariacaoForm> listForm) {
         VariacaoForm variacaoForm = new VariacaoForm();
-
-        for (VariacaoForm form : listForm) {
-            Optional<Produto> optional = produtoRepository.findById(form.getProduct_id());
+        List<Variacao> variacaos = variacaoForm.converterLista(listForm);
+        for (int i = 0; i < listForm.size(); i++) {
+            Optional<Produto> optional = produtoRepository.findById(listForm.get(i).getProduct_id());
             if (optional.isEmpty()) {
-                ResponseEntity.notFound().build();
+                return ResponseEntity.notFound().build();
+            } else if (optional.get().getId() == variacaos.get(i).getProduct_id()) {
+                Variacao var = new Variacao();
+                var.setId(sequenceGeneratorService.getSequenceNumber(SEQUENCE_NAME));
+                var.setSize(variacaos.get(i).getSize());
+                var.setPrice(variacaos.get(i).getPrice());
+                var.setQuantity(variacaos.get(i).getQuantity());
+                var.setColor(variacaos.get(i).getColor());
+                var.setProduct_id(variacaos.get(i).getProduct_id());
+                variacaoRepository.save(var);
+                List<Variacao> variacaoList = new LinkedList<>();
+                variacaoList.add(var);
+                Produto produto = optional.get();
+                produto.setVariacoes(variacaoList);
+                produtoRepository.save(produto);
+            } else {
+                return ResponseEntity.notFound().build();
             }
         }
-        List<Variacao> variacoes = variacaoForm.converter(listForm);
-        for(Variacao var : variacoes){
-            if(var.getPrice() == null || var.getColor() == null || var.getProduct_id() == null || var.getSize() == null) {
-                throw new Exception("PREÇO OU COR OU PRODUTO_ID ESTÁ NULO");
-            }
-        }
-        Produto produto = variacaoForm.retorna(listForm, produtoRepository);
-        if (produto != null) {
-            for (Variacao variacoe : variacoes) {
-                Variacao variacao = new Variacao();
-                variacao.setId(sequenceGeneratorService.getSequenceNumber(SEQUENCE_NAME));
-                variacoe.setId(variacao.getId());
-            }
-            variacaoRepository.saveAll(variacoes);
-
-            produto.setVariacoes(variacoes);
-            produtoRepository.save(produto);
-            return ResponseEntity.ok().build();
-        }
-        return  ResponseEntity.notFound().build();
-        }
-
+        return ResponseEntity.ok().build();
+    }
 
 
     @Transactional
     @Override
-    public ResponseEntity<VariacaoDto> atualizaVariacao(@RequestBody @Valid List<VariacaoForm> listForm, @PathVariable Integer id) {
-        Optional<Variacao> optional = variacaoRepository.findById(id);
-        if (optional.isPresent()) {
-            VariacaoForm variacaoForm = new VariacaoForm();
-            List<Variacao> variacoes = variacaoForm.converter(listForm);
-            Produto produto = variacaoForm.retorna(listForm, produtoRepository);
-            if (variacoes != null && produto != null) {
-                for (Variacao variacoe : variacoes) {
-                    Variacao variacao = new Variacao();
-                    variacao.setId(sequenceGeneratorService.getSequenceNumber(SEQUENCE_NAME));
-                    variacoe.setId(optional.get().getId());
+    public ResponseEntity<VariacaoDto> atualizaVariacao(@RequestBody List<Variacao> variacaos, @PathVariable Integer id) {
+        Variacao variacao[] = new Variacao[variacaos.size()];
+        for (int i = 0; i < variacaos.size(); i++) {
+            Optional<Variacao> optional = variacaoRepository.findById(id);
+            if (optional.isPresent()) {
+                Optional<Produto> produtoOptional = produtoRepository.findById(optional.get().getProduct_id());
+                if (produtoOptional.isPresent()) {
+                    variacao[i] = new Variacao(optional.get().getId(), optional.get().getColor(), optional.get().getSize(), optional.get().getPrice(), optional.get().getQuantity(), optional.get().getProduct_id());
+                    Produto produto = produtoOptional.get();
+                    produto.setVariacoes(List.of(variacao));
+                    produtoRepository.save(produto);
+                    variacaoRepository.save(variacao[i]);
+                    return ResponseEntity.ok().build();
+                } else {
+                    return ResponseEntity.notFound().build();
                 }
-                variacaoRepository.saveAll(variacoes);
-                produto.setVariacoes(variacoes);
-                produtoRepository.save(produto);
-                return ResponseEntity.ok().build();
             }
         }
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.notFound().build();
     }
-
-
     @Override
     public ResponseEntity<VariacaoDto> deletarVariacao(@PathVariable Integer id) {
         Optional<Variacao> optional = variacaoRepository.findById(id);

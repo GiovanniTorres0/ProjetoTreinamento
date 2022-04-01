@@ -19,11 +19,11 @@ public class Perfil implements GrantedAuthority {
             sequenceName = "perfil_id_sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "perfil_id_sequence")
     private Integer id;
-    private String email;
+    private String nome;
 
 
     @Override
     public String getAuthority() {
-        return email;
+        return nome;
     }
 }

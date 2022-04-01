@@ -1,17 +1,14 @@
 package com.mscatalog.catalog.form;
 
-import com.mscatalog.catalog.entity.Produto;
 import com.mscatalog.catalog.entity.Variacao;
 import com.mscatalog.catalog.enums.Size;
-import com.mscatalog.catalog.repository.ProdutoRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Data
@@ -33,24 +30,14 @@ public class VariacaoForm {
     private Integer product_id;
 
 
-    public List<Variacao> converter(List<VariacaoForm> listForm) {
-        List<Variacao> variacoes = listForm.stream().map(var -> new Variacao(
-                var.getId(), var.getColor(), var.getSize(), var.getPrice(), var.getQuantity(), var.getProduct_id())).collect(Collectors.toList());
-        return variacoes;
-    }
-
-
-    public Produto retorna(List<VariacaoForm> list, ProdutoRepository produtoRepository) {
-        Produto produto = new Produto();
-        for (int i = 0; i < list.size(); i++) {
-            Optional<Produto> optional = produtoRepository.findById(list.get(i).getProduct_id());
-            if (optional.isPresent()) {
-                produto = optional.get();
-            }
+    public List<Variacao> converterLista(List<VariacaoForm> listForm) {
+        List<Variacao> variacaos = new ArrayList<>(10);
+        Variacao variacao[] = new Variacao[listForm.size()];
+        for (int i = 0; i < listForm.size(); i++) {
+            variacao[i] = new Variacao(listForm.get(i).getId(), listForm.get(i).getColor(), listForm.get(i).getSize(), listForm.get(i).getPrice(), listForm.get(i).getQuantity(), listForm.get(i).getProduct_id());
         }
-        return produto;
+        variacaos.addAll(List.of(variacao));
+        return variacaos;
     }
-
-
 }
 

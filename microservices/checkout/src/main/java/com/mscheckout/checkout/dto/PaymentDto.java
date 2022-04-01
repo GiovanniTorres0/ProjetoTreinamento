@@ -2,14 +2,14 @@ package com.mscheckout.checkout.dto;
 
 import com.mscheckout.checkout.entity.Payment;
 import com.mscheckout.checkout.enums.Card;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PaymentDto {
 
 

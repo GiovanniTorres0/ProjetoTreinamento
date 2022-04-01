@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/microservices/catalog/catalog.iml" filepath="$PROJECT_DIR$/microservices/catalog/catalog.iml" />
       <module fileurl="file://$PROJECT_DIR$/microservices/checkout/checkout.iml" filepath="$PROJECT_DIR$/microservices/checkout/checkout.iml" />
       <module fileurl="file://$PROJECT_DIR$/microservices/customer/customer.iml" filepath="$PROJECT_DIR$/microservices/customer/customer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservices/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/microservices/eureka-server/eureka-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/microservices/history/history.iml" filepath="$PROJECT_DIR$/microservices/history/history.iml" />
       <module fileurl="file://$PROJECT_DIR$/microservices/microservices.iml" filepath="$PROJECT_DIR$/microservices/microservices.iml" />
     </modules>

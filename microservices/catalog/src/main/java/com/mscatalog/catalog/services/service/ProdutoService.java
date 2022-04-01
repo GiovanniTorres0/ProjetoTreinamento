@@ -22,6 +22,8 @@ public interface ProdutoService {
 
     List<ProdutosVariadosDto> buscaTodosProdutos();
 
+    ResponseEntity<List<ProdutosVariadosDto>> buscaProdutoVariadoPorId(@PathVariable Integer id);
+
     ResponseEntity<ProdutoDto> buscaPorId(@PathVariable Integer id);
 
     @Transactional
@@ -33,5 +35,4 @@ public interface ProdutoService {
 
     List<ProdutosVariadosDto> retorna() throws Exception;
 
-    double valor() throws Exception;
 }

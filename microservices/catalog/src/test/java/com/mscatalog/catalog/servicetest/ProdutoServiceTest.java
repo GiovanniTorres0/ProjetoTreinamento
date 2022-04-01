@@ -139,10 +139,5 @@ public class ProdutoServiceTest {
         }
     }
 
-    @Test
-    public  void RetornaValorTotalDeVariados() throws Exception {
-        double valor =  produtoServiceImp.valor();
-        Assert.assertNotNull(valor);
-        System.out.println("RETORNA O VALOR DOS PRODUTOS VARIADOS");
-    }
+
 }

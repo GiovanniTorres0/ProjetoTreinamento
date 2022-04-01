@@ -36,10 +36,13 @@ public class ProdutoForm {
 
     public Categoria inicia(ProdutoForm produtoForm, CategoriaRepository categoriaRepository) {
         Optional<Categoria> optional = categoriaRepository.findById(produtoForm.getCategory_id());
-        return optional.orElseGet(() -> new Categoria(1, "PRODUTO INVÁLIDO PARA TESTE", true));
+        if(optional.isPresent()){
+            return optional.get();
+        } else {
+            return new Categoria(1, "CATEGORIA INVÁLIDA", false);
+        }
 
     }
-
 
 }
 

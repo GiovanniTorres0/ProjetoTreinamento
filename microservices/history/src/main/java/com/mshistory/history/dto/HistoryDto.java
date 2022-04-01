@@ -15,20 +15,21 @@ import java.util.List;
 @NoArgsConstructor
 public class HistoryDto {
 
+
     private UsuarioDto user;
-    private PaymentDto payment;
+    private List<PaymentDto> payments;
     private List<ProdutosVariadosDto> produtosVariadosDto;
     private double total;
     private String data;
 
+    public History converte(HistoryDto historyDto){
+        History history = new History();
+        history.setUser(historyDto.getUser());
+        history.setData(historyDto.getData());
+        history.setTotal(historyDto.getTotal());
+        history.setProdutosVariadosDto(historyDto.getProdutosVariadosDto());
+        history.setPayment(historyDto.getPayments());
+        return history;
 
-    public HistoryDto(History history){
-        this.user = history.getUser();
-        this.payment = history.getPayment();
-        this.produtosVariadosDto = history.getProdutosVariadosDto();
-        this.total = history.getTotal();
-        this.data = history.getData();
     }
-
-
 }

@@ -1,6 +1,6 @@
 package com.mshistory.history.services.sequence;
 
-import com.mshistory.history.entity.DbSequence;
+import com.mscatalog.catalog.entity.DbSequence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+
 import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
 
 @Service

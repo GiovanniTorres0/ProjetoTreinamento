@@ -18,4 +18,5 @@ public class Purchase {
     private String user_id;
     private String payment_id;
 
+
 }

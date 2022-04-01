@@ -25,9 +25,11 @@ public class History {
     @Id
     private Integer id;
     private UsuarioDto user;
-    private PaymentDto payment;
+    private List<PaymentDto> payment;
     private List<ProdutosVariadosDto> produtosVariadosDto;
     private String data;
     private double total;
+
+
 
 }

@@ -1,6 +1,7 @@
 package com.mscatalog.catalog.services.service;
 
 import com.mscatalog.catalog.dto.VariacaoDto;
+import com.mscatalog.catalog.entity.Variacao;
 import com.mscatalog.catalog.form.VariacaoForm;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,9 @@ public interface VariacaoService {
     ResponseEntity<VariacaoDto> cadastraVariacao(@RequestBody @Valid List<VariacaoForm> listForm) throws Exception;
 
     @Transactional
-    ResponseEntity<VariacaoDto> atualizaVariacao(@RequestBody @Valid List<VariacaoForm> listForm, @PathVariable Integer id);
+    ResponseEntity<VariacaoDto> atualizaVariacao(@RequestBody List<Variacao> variacaos, @PathVariable Integer id);
+
+    @Transactional
 
     ResponseEntity<VariacaoDto> deletarVariacao(@PathVariable Integer id);
 }

@@ -42,7 +42,7 @@ public class UsuarioServiceTest {
 
     @BeforeEach
     public UsuarioForm usuarioForm(){
-        return new UsuarioForm("Pedro", "Cardozo", Sex.MASCULINO, "aaaaae@gmail.com", "448.395.830.56", "102030405", "1998-10-11", null);
+        return new UsuarioForm("Pedro", "Cardozo", Sex.MASCULINO, "aaaaae@gmail.com", "448.395.830.56", "102030405", "1998-10-11");
     }
 
     @BeforeEach

@@ -28,15 +28,19 @@ public class RabbitMqReceiver implements RabbitListenerConfigurer {
 
     @RabbitListener(queues = "${spring.rabbitmq.queue}")
     public void receivedMessage(PurchaseForm purchaseForm) {
-        logger.info("Purchase Details Received is.. " + purchaseForm);
-        for (int i = 0; i < purchaseForm.getCart().size(); i++) {
-            int idV = purchaseForm.getCart().get(i).getVariant_id();
-            Optional<Variacao> optional = variacaoRepository.findById(idV);
-            if (optional.isPresent()) {
-                optional.get().setQuantity(purchaseForm.getCart().get(i).getQuantity());
-                variacaoRepository.save(optional.get());
+        try {
+            logger.info("Purchase Details Received is.. " + purchaseForm);
+
+            for (int i = 0; i < purchaseForm.getCart().size(); i++) {
+                Optional<Variacao> optional = variacaoRepository.findById(purchaseForm.getCart().get(i).getVariant_id());
+                if (optional.isPresent()) {
+                    optional.get().setQuantity(purchaseForm.getCart().get(i).getQuantity());
+                    variacaoRepository.save(optional.get());
+                }
+                logger.info("Quantidade atualizada", optional.get());
             }
-            logger.info("Quantidade atualizada", optional.get());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

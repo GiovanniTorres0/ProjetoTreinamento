@@ -2,6 +2,7 @@ package com.mshistory.history.services.rabbitmq;
 
 
 import com.mscheckout.checkout.form.PurchaseForm;
+import com.mshistory.history.entity.History;
 import com.mshistory.history.repository.HistoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,11 +16,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class RabbitMqReceiver implements RabbitListenerConfigurer {
 
+    private static final Logger logger = LoggerFactory.getLogger(RabbitMqReceiver.class);
     @Autowired
     HistoryRepository historyRepository;
-
-
-    private static final Logger logger = LoggerFactory.getLogger(RabbitMqReceiver.class);
 
     @Override
     public void configureRabbitListeners(RabbitListenerEndpointRegistrar rabbitListenerEndpointRegistrar) {
@@ -27,8 +26,13 @@ public class RabbitMqReceiver implements RabbitListenerConfigurer {
 
     @RabbitListener(queues = "${spring.rabbitmq.queue}")
     public void receivedMessage(PurchaseForm purchaseForm) {
-        logger.info("Purchase Details Received is.. " + purchaseForm);
-
+        try {
+            logger.info("Purchase Details Received is.. " + purchaseForm);
+            History history = historyRepository.findHistoryByUserId(Integer.parseInt(purchaseForm.getUser_id()));
+            historyRepository.save(history);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

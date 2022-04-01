@@ -15,6 +15,7 @@
     <module>checkout</module>
     <module>history</module>
     <module>bffshop</module>
+    <module>eureka-server</module>
   </modules>
 
   <name>microservices</name>
@@ -27,7 +28,7 @@
     <maven.compiler.target>17</maven.compiler.target>
     <spring.boot.maven.plugin.version>2.5.7</spring.boot.maven.plugin.version>
     <spring.boot.dependencies.version>2.5.7</spring.boot.dependencies.version>
-    <spring.cloud-version>2020.0.3</spring.cloud-version>
+    <spring-cloud.version>2020.0.3</spring-cloud.version>
     <image>msstore/${project.artifactId}:${project.version}</image>
   </properties>
 
@@ -40,11 +41,19 @@
         <scope>import</scope>
         <type>pom</type>
       </dependency>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
 
   <dependencies>
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -83,8 +92,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
-
-
   </dependencies>
 
   <build>

@@ -3,7 +3,6 @@ package com.mscustomer.customer.controller;
 
 import com.mscustomer.customer.dto.UsuarioDto;
 import com.mscustomer.customer.form.AtualizarUsuarioForm;
-import com.mscustomer.customer.form.LoginForm;
 import com.mscustomer.customer.form.UsuarioForm;
 import com.mscustomer.customer.services.service.UsuarioService;
 import io.swagger.annotations.ApiOperation;
@@ -23,12 +22,6 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @ApiOperation(value = "Dados para Login", notes = "Envia os dados para validação de login", response = UsuarioController.class)
-    @ApiResponses({@ApiResponse(code = 201, message = "Created"), @ApiResponse(code = 400, message = "Bad Request")})
-    @PostMapping(value = "/v1/login")
-    public ResponseEntity<UsuarioDto> login(@RequestBody @Valid LoginForm loginForm) throws Exception {
-        return usuarioService.login(loginForm);
-    }
 
     @ApiOperation(value = "Cadastra um Usuário", notes = "Envia os dados para cadastro de usuario", response = UsuarioController.class)
     @ApiResponses({@ApiResponse(code = 201, message = "Created"), @ApiResponse(code = 400, message = "Bad Request")})
@@ -37,7 +30,7 @@ public class UsuarioController {
         return usuarioService.save(usuarioForm);
     }
 
-    @ApiOperation(value = "Busca usuario por Id", notes = "Busca usuario pelo UUID", response = UsuarioController.class)
+    @ApiOperation(value = "Busca usuario por Id", notes = "Busca usuario pelo Integer", response = UsuarioController.class)
     @ApiResponses({@ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 404, message = "Not Found")})
     @GetMapping(value = "/v1/users/{id}")
     public ResponseEntity<UsuarioDto> findById(@PathVariable Integer id) {

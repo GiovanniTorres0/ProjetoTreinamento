@@ -1,6 +1,7 @@
 package com.mscatalog.catalog.controller;
 
 import com.mscatalog.catalog.dto.VariacaoDto;
+import com.mscatalog.catalog.entity.Variacao;
 import com.mscatalog.catalog.form.VariacaoForm;
 import com.mscatalog.catalog.services.service.VariacaoService;
 import io.swagger.annotations.ApiOperation;
@@ -33,8 +34,8 @@ public class VariacaoController {
     @ApiResponses({@ApiResponse(code = 200, message = "OK")})
     @Transactional
     @PutMapping("/variations/{id}")
-    public ResponseEntity<VariacaoDto> atualizarVariacao(@RequestBody @Valid List<VariacaoForm> listForm, @PathVariable Integer id) {
-        return variacaoService.atualizaVariacao(listForm, id);
+    public ResponseEntity<VariacaoDto> atualizaVariacao(@RequestBody List<Variacao> variacaos, @PathVariable Integer id) {
+        return variacaoService.atualizaVariacao(variacaos,id);
     }
 
     @ApiOperation(value = "Deleta uma Variacao", notes = "Deleta uma Variacao de Produto", response = VariacaoController.class)

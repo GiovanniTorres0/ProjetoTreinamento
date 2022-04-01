@@ -3,7 +3,6 @@ package com.mscatalog.catalog.controller;
 import com.mscatalog.catalog.dto.ProdutoDto;
 import com.mscatalog.catalog.dto.ProdutosVariadosDto;
 import com.mscatalog.catalog.form.ProdutoForm;
-import com.mscatalog.catalog.form.VariacaoForm;
 import com.mscatalog.catalog.services.service.ProdutoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -28,7 +27,7 @@ public class ProdutoController {
     @ApiResponses({@ApiResponse(code = 201, message = "Created")})
     @Transactional
     @PostMapping("/products")
-    public ResponseEntity<ProdutoDto> registraProduto(@RequestBody @Valid ProdutoForm produtoForm, VariacaoForm variacaoForm) throws Exception {
+    public ResponseEntity<ProdutoDto> registraProduto(@RequestBody @Valid ProdutoForm produtoForm) throws Exception {
         return produtoService.registraProduto(produtoForm);
     }
 
@@ -41,7 +40,7 @@ public class ProdutoController {
 
     @ApiOperation(value = "Busca um Produto", notes = "Busca um Produto", response = ProdutoController.class)
     @ApiResponses({@ApiResponse(code = 200, message = "OK")})
-    @GetMapping("/products/{id}")
+    @GetMapping("/product/{id}")
     public ResponseEntity<ProdutoDto> buscaPorId(@PathVariable Integer id) {
         return produtoService.buscaPorId(id);
     }
@@ -61,5 +60,10 @@ public class ProdutoController {
         return produtoService.deletarPorId(id);
     }
 
+
+    @GetMapping("/products/{id}")
+    public ResponseEntity<List<ProdutosVariadosDto>> buscaProdutoVariadoPorId(@PathVariable Integer id){
+        return produtoService.buscaProdutoVariadoPorId(id);
+    }
 
 }

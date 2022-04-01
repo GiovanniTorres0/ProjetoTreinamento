@@ -52,17 +52,30 @@ public class ProdutoServiceImp implements ProdutoService {
         }
     }
 
-        @Override
-        public List<ProdutosVariadosDto> buscaTodosProdutos () {
-            List<Produto> produtos = produtoRepository.findAll();
-            return ProdutosVariadosDto.converterProdutos(produtos);
-        }
+    @Override
+    public List<ProdutosVariadosDto> buscaTodosProdutos() {
+        List<Produto> produtos = produtoRepository.findAll();
+        return ProdutosVariadosDto.converterProdutos(produtos);
+    }
 
-        @Override
-        public ResponseEntity<ProdutoDto> buscaPorId (@PathVariable Integer id){
-            Optional<Produto> optional = produtoRepository.findById(id);
-            return optional.map(produto -> new ResponseEntity<>(new ProdutoDto(produto), HttpStatus.OK)).orElseGet(() -> ResponseEntity.notFound().build());
+
+    @Override
+    public ResponseEntity<List<ProdutosVariadosDto>> buscaProdutoVariadoPorId(@PathVariable Integer id) {
+        List<Produto> produtos = produtoRepository.findAll();
+        for (int i = 0; i < produtos.size(); i++) {
+            if (produtos.get(i).getId() == id) {
+                return new ResponseEntity<>(ProdutosVariadosDto.converterProdutos(produtos), HttpStatus.OK);
+            }
         }
+        return ResponseEntity.notFound().build();
+    }
+
+
+    @Override
+    public ResponseEntity<ProdutoDto> buscaPorId(@PathVariable Integer id) {
+        Optional<Produto> optional = produtoRepository.findById(id);
+        return optional.map(produto -> new ResponseEntity<>(new ProdutoDto(produto), HttpStatus.OK)).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
     @Transactional
     @Override
@@ -87,26 +100,18 @@ public class ProdutoServiceImp implements ProdutoService {
         return ResponseEntity.notFound().build();
     }
 
-        @Override
-        public List<ProdutosVariadosDto> retorna () throws Exception {
-           try {
-               List<Produto> produtos = produtoRepository.findProdutoByActiveIsTrue();
-               List<ProdutosVariadosDto> lista = new LinkedList<>();
-               return ProdutosVariadosDto.converterProdutos(produtos);
-           } catch(Exception e) {
-               throw new Exception("NÃO LOCALIZOU PRODUTOS ATIVOS");
-           }
+    @Override
+    public List<ProdutosVariadosDto> retorna() throws Exception {
+        try {
+            List<Produto> produtos = produtoRepository.findProdutoByActiveIsTrue();
+            List<ProdutosVariadosDto> lista = new LinkedList<>();
+            return ProdutosVariadosDto.converterProdutos(produtos);
+        } catch (Exception e) {
+            throw new Exception("NÃO LOCALIZOU PRODUTOS ATIVOS");
         }
-
-
-        @Override
-        public double valor () throws Exception {
-            double valor = 0;
-            for (int i = 0; i < retorna().size(); i++) {
-                valor += retorna().get(i).getVariacoes().get(i).getPrice();
-            }
-            return valor;
-        }
-
-
     }
+
+
+
+
+}

@@ -3,7 +3,6 @@ package com.mscustomer.customer.services.serviceimp;
 import com.mscustomer.customer.dto.UsuarioDto;
 import com.mscustomer.customer.entity.Usuario;
 import com.mscustomer.customer.form.AtualizarUsuarioForm;
-import com.mscustomer.customer.form.LoginForm;
 import com.mscustomer.customer.form.UsuarioForm;
 import com.mscustomer.customer.repository.PerfilRepository;
 import com.mscustomer.customer.repository.UsuarioRepository;
@@ -11,7 +10,6 @@ import com.mscustomer.customer.services.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,12 +61,6 @@ public class UsuarioServiceImp implements UsuarioService {
         }
     }
 
-    @Override
-    @Transactional
-    public ResponseEntity<UsuarioDto> login(@RequestBody @Valid LoginForm loginForm) throws Exception {
-        UsernamePasswordAuthenticationToken dadosLogin = loginForm.converter();
-        throw new Exception("Infelizmente não consegui descobrir como envio um metodo de um microserviço para o outro");
-    }
 
     @Transactional
     @Override
@@ -92,6 +84,7 @@ public class UsuarioServiceImp implements UsuarioService {
         }
        throw new EntityNotFoundException();
     }
+
 
 
 

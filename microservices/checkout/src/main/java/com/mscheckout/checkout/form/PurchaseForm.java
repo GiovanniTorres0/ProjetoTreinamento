@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.OneToMany;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -24,7 +23,6 @@ public class PurchaseForm implements Serializable {
     private String payment_id;
     @NotNull
     @OneToMany
-    @Valid
     private List<CartForm> cart = new ArrayList<>();
 
 

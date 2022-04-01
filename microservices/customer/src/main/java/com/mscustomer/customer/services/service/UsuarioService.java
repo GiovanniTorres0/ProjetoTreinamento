@@ -2,7 +2,6 @@ package com.mscustomer.customer.services.service;
 
 import com.mscustomer.customer.dto.UsuarioDto;
 import com.mscustomer.customer.form.AtualizarUsuarioForm;
-import com.mscustomer.customer.form.LoginForm;
 import com.mscustomer.customer.form.UsuarioForm;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,11 +20,9 @@ public  interface UsuarioService {
     ResponseEntity<UsuarioDto> findById(@PathVariable Integer id);
 
     @Transactional
-    ResponseEntity<UsuarioDto> login(@RequestBody @Valid LoginForm loginForm) throws Exception;
-
-    @Transactional
     ResponseEntity<UsuarioDto> update(@RequestBody @Valid AtualizarUsuarioForm atualizarUsuarioForm, @PathVariable Integer id) throws ParseException;
 
     UsuarioDto retorna(Integer id);
 
- }
+
+}

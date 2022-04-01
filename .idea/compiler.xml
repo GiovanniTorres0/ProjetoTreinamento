@@ -7,10 +7,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="catalog" />
         <module name="history" />
         <module name="bffshop" />
         <module name="checkout" />
-        <module name="catalog" />
+        <module name="eureka-server" />
         <module name="customer" />
       </profile>
     </annotationProcessing>
@@ -18,7 +19,9 @@
       <module name="bffshop" target="17" />
       <module name="catalog" target="17" />
       <module name="checkout" target="17" />
+      <module name="configserver" target="11" />
       <module name="customer" target="17" />
+      <module name="eureka-server" target="17" />
       <module name="history" target="17" />
       <module name="microservices" target="17" />
     </bytecodeTargetLevel>
@@ -28,7 +31,9 @@
       <module name="bffshop" options="" />
       <module name="catalog" options="" />
       <module name="checkout" options="" />
+      <module name="configserver" options="-parameters" />
       <module name="customer" options="" />
+      <module name="eureka-server" options="" />
       <module name="history" options="" />
     </option>
   </component>

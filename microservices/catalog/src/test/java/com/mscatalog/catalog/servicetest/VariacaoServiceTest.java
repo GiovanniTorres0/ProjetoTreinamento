@@ -95,7 +95,7 @@ public class VariacaoServiceTest {
 
     @Test
     public void AtualizarVariacao() throws Exception {
-        ResponseEntity<VariacaoDto> entity = variacaoServiceImp.atualizaVariacao(variacaoForms(),1);
+        ResponseEntity<VariacaoDto> entity = variacaoServiceImp.atualizaVariacao(variacao(),1);
         if(entity.getStatusCodeValue() == 200){
             Assert.assertEquals(200, entity.getStatusCodeValue());
             System.out.println("VARIACAO ATUALIZADA COM SUCESSO");

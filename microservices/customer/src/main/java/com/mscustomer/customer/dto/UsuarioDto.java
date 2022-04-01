@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class UsuarioDto {
 
+    private Integer id;
     private String firstName;
     private String lastName;
     @Enumerated(value = EnumType.STRING)
@@ -26,6 +27,7 @@ public class UsuarioDto {
 
 
     public UsuarioDto(Usuario usuario) {
+        this.id = usuario.getId();
         this.firstName = usuario.getFirstName();
         this.lastName = usuario.getLastName();
         this.sex = usuario.getSex();
